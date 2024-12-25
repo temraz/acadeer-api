@@ -1,0 +1,826 @@
+{
+	"info": {
+		"_postman_id": "b5e3e3e0-5b0a-4b0e-8b0a-5b0a4b0e8b0a",
+		"name": "Subteacher API",
+		"description": "API collection for Subteacher application",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Sign Up",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"teacher@example.com\",\n    \"password\": \"password123\",\n    \"user_type\": 2,\n    \"full_name\": \"John Doe\",\n    \"phone_number\": \"+966501234567\",\n    \"city_id\": 1,\n    \"price_per_day\": 200.00\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/signup",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"signup"
+							]
+						},
+						"description": "Register a new user (teacher or school admin)"
+					}
+				},
+				{
+					"name": "School Sign Up",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name_en",
+									"value": "International School",
+									"type": "text"
+								},
+								{
+									"key": "name_ar",
+									"value": "المدرسة الدولية",
+									"type": "text"
+								},
+								{
+									"key": "logo",
+									"type": "file",
+									"src": []
+								},
+								{
+									"key": "admin_full_name",
+									"value": "School Admin",
+									"type": "text"
+								},
+								{
+									"key": "admin_email",
+									"value": "admin@school.com",
+									"type": "text"
+								},
+								{
+									"key": "admin_phone",
+									"value": "+966501234567",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "secure_password123",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/school/signup",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"school",
+								"signup"
+							]
+						},
+						"description": "Register a new school and create its admin account with logo upload"
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name_en\": \"International School\",\n    \"name_ar\": \"المدرسة الدولية\",\n    \"logo\": \"https://example.com/school-logo.png\",\n    \"admin_full_name\": \"School Admin\",\n    \"admin_email\": \"admin@school.com\",\n    \"admin_phone\": \"+966501234567\",\n    \"password\": \"secure_password123\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/auth/school/signup"
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"body": {
+								"mode": "raw",
+								"raw": "{\n    \"school\": {\n        \"id\": 1,\n        \"name_en\": \"International School\",\n        \"name_ar\": \"المدرسة الدولية\",\n        \"logo\": \"https://example.com/school-logo.png\",\n        \"is_active\": true,\n        \"created_at\": \"2024-03-20T10:30:00Z\",\n        \"updated_at\": \"2024-03-20T10:30:00Z\"\n    },\n    \"tokens\": {\n        \"access_token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\",\n        \"refresh_token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\",\n        \"token_type\": \"Bearer\",\n        \"expires_in\": 86400\n    }\n}"
+							}
+						}
+					]
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"teacher@example.com\",\n    \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						},
+						"description": "Login with email and password"
+					}
+				},
+				{
+					"name": "Refresh Token",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Refresh-Token",
+								"value": "{{refresh_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/auth/refresh",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"refresh"
+							]
+						},
+						"description": "Get new access token using refresh token"
+					}
+				}
+			],
+			"description": "Authentication related endpoints"
+		},
+		{
+			"name": "User Profile",
+			"item": [
+				{
+					"name": "Get Profile",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/users/profile",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"profile"
+							]
+						},
+						"description": "Get current user's profile"
+					}
+				},
+				{
+					"name": "Update Profile",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"full_name\": \"Updated Name\",\n    \"email\": \"updated.email@example.com\",\n    \"phone_number\": \"+966501234567\",\n    \"city_id\": 1,\n    \"cost_per_day\": 250.00,\n    \"gender\": 1,\n    \"birthday\": \"1990-01-01\",\n    \"teaching_style_ids\": [1, 2, 3]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users/profile",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"profile"
+							]
+						},
+						"description": "Update user profile information including teaching styles"
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept-Language",
+										"value": "ar"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"full_name\": \"Updated Name\",\n    \"email\": \"updated.email@example.com\",\n    \"phone_number\": \"+966501234567\",\n    \"city_id\": 1,\n    \"cost_per_day\": 250.00,\n    \"gender\": 1,\n    \"birthday\": \"1990-01-01\",\n    \"teaching_style_ids\": [1, 2, 3]\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/users/profile"
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"body": {
+								"mode": "raw",
+								"raw": "{\n    \"success\": true,\n    \"message\": \"تم تحديث الملف الشخصي بنجاح\",\n    \"data\": {\n        \"id\": 1,\n        \"school_id\": null,\n        \"email\": \"updated.email@example.com\",\n        \"user_type\": 2,\n        \"is_active\": true,\n        \"full_name\": \"Updated Name\",\n        \"phone_number\": \"+966501234567\",\n        \"city_id\": 1,\n        \"profile_pic\": null,\n        \"cost_per_day\": 250.00,\n        \"gender\": 1,\n        \"birthday\": \"1990-01-01T00:00:00Z\",\n        \"teaching_styles\": [\n            {\n                \"id\": 1,\n                \"style_name_en\": \"Lecture-based\",\n                \"style_name_ar\": \"قائم على المحاضرات\"\n            },\n            {\n                \"id\": 2,\n                \"style_name_en\": \"Interactive\",\n                \"style_name_ar\": \"تفاعلي\"\n            },\n            {\n                \"id\": 3,\n                \"style_name_en\": \"Hands-on\",\n                \"style_name_ar\": \"عملي\"\n            }\n        ],\n        \"created_at\": \"2024-03-20T10:00:00Z\",\n        \"updated_at\": \"2024-03-20T12:34:56Z\"\n    }\n}"
+							}
+						}
+					]
+				},
+				{
+					"name": "Get User Details",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/users/me",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"me"
+							]
+						},
+						"description": "Get current user details including school and teaching styles"
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept-Language",
+										"value": "ar"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/api/users/me"
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"body": {
+								"mode": "raw",
+								"raw": "{\n    \"success\": true,\n    \"message\": \"تم بنجاح\",\n    \"data\": {\n        \"user\": {\n            \"id\": 1,\n            \"school_id\": null,\n            \"school\": null,\n            \"email\": \"teacher@example.com\",\n            \"user_type\": 2,\n            \"is_active\": true,\n            \"full_name\": \"John Doe\",\n            \"phone_number\": \"+966501234567\",\n            \"city_id\": 1,\n            \"profile_pic\": null,\n            \"price_per_day\": 200.00,\n            \"cost_per_day\": 250.00,\n            \"gender\": 1,\n            \"birthday\": \"1990-01-01T00:00:00Z\",\n            \"teaching_styles\": [\n                {\n                    \"id\": 1,\n                    \"style_name_en\": \"Lecture-based\",\n                    \"style_name_ar\": \"قائم على المحاضرات\"\n                },\n                {\n                    \"id\": 2,\n                    \"style_name_en\": \"Interactive\",\n                    \"style_name_ar\": \"تفاعلي\"\n                }\n            ],\n            \"availability_status\": 1,\n            \"status_id\": 1,\n            \"bio\": null,\n            \"background_check_status\": 1,\n            \"created_at\": \"2024-03-20T10:00:00Z\",\n            \"updated_at\": \"2024-03-20T12:34:56Z\"\n        }\n    }\n}"
+							}
+						}
+					]
+				},
+				{
+					"name": "Update Education Profile",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"education_history\": [\n        {\n            \"degree\": \"Bachelor of Education\",\n            \"institution\": \"King Saud University\",\n            \"major\": \"Mathematics Education\",\n            \"file\": \"path/to/file1.pdf\",\n            \"graduation_year\": 2018,\n            \"gpa\": 3.8\n        },\n        {\n            \"degree\": \"Master of Education\",\n            \"institution\": \"King Abdulaziz University\",\n            \"major\": \"Curriculum Development\",\n            \"file\": \"path/to/file2.pdf\",\n            \"graduation_year\": 2020,\n            \"gpa\": 3.9\n        }\n    ],\n    \"teaching_license\": {\n        \"license_number\": \"T123456\",\n        \"issuing_authority\": \"Ministry of Education\",\n        \"issue_date\": \"2020-01-01\",\n        \"expiry_date\": \"2025-01-01\",\n        \"file\": \"path/to/license.pdf\",\n        \"status\": \"active\"\n    },\n    \"certifications\": [\n        {\n            \"certification_id\": 1,\n            \"issue_date\": \"2021-03-15\",\n            \"expiry_date\": \"2024-03-15\",\n            \"file\": \"path/to/cert1.pdf\",\n            \"issuing_authority\": \"International TEFL Academy\"\n        },\n        {\n            \"certification_id\": 2,\n            \"issue_date\": \"2022-06-01\",\n            \"expiry_date\": \"2025-06-01\",\n            \"file\": \"path/to/cert2.pdf\",\n            \"issuing_authority\": \"STEM Education Institute\"\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users/profile/education",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"profile",
+								"education"
+							]
+						},
+						"description": "Update user's education profile including history, license, and certifications"
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept-Language",
+										"value": "ar"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"education_history\": [\n        {\n            \"degree\": \"Bachelor of Education\",\n            \"institution\": \"King Saud University\",\n            \"major\": \"Mathematics Education\",\n            \"file\": \"path/to/file1.pdf\",\n            \"graduation_year\": 2018,\n            \"gpa\": 3.8\n        }\n    ],\n    \"teaching_license\": {\n        \"license_number\": \"T123456\",\n        \"issuing_authority\": \"Ministry of Education\",\n        \"issue_date\": \"2020-01-01\",\n        \"expiry_date\": \"2025-01-01\",\n        \"file\": \"path/to/license.pdf\",\n        \"status\": \"active\"\n    },\n    \"certifications\": [\n        {\n            \"certification_id\": 1,\n            \"issue_date\": \"2021-03-15\",\n            \"expiry_date\": \"2024-03-15\",\n            \"file\": \"path/to/cert1.pdf\",\n            \"issuing_authority\": \"International TEFL Academy\"\n        }\n    ]\n}"
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"body": {
+								"mode": "raw",
+								"raw": "{\n    \"success\": true,\n    \"message\": \"تم تحديث المعلومات التعليمية بنجاح\",\n    \"data\": {\n        \"education_history\": {\n            \"id\": 1,\n            \"user_id\": 1,\n            \"degree\": \"Bachelor of Education\",\n            \"institution\": \"King Saud University\",\n            \"major\": \"Mathematics Education\",\n            \"graduation_year\": 2018,\n            \"gpa\": 3.8,\n            \"file\": \"path/to/file1.pdf\",\n            \"created_at\": \"2024-03-20T10:00:00Z\",\n            \"updated_at\": \"2024-03-20T10:00:00Z\"\n        },\n        \"teaching_license\": {\n            \"id\": 1,\n            \"user_id\": 1,\n            \"license_number\": \"T123456\",\n            \"issuing_authority\": \"Ministry of Education\",\n            \"issue_date\": \"2020-01-01\",\n            \"expiry_date\": \"2025-01-01\",\n            \"file\": \"path/to/license.pdf\",\n            \"status\": \"active\",\n            \"created_at\": \"2024-03-20T10:00:00Z\",\n            \"updated_at\": \"2024-03-20T10:00:00Z\"\n        },\n        \"certifications\": [\n            {\n                \"id\": 1,\n                \"user_id\": 1,\n                \"certification_id\": 1,\n                \"issue_date\": \"2021-03-15\",\n                \"expiry_date\": \"2024-03-15\",\n                \"file\": \"path/to/cert1.pdf\",\n                \"issuing_authority\": \"International TEFL Academy\",\n                \"created_at\": \"2024-03-20T10:00:00Z\",\n                \"updated_at\": \"2024-03-20T10:00:00Z\",\n                \"certification\": {\n                    \"id\": 1,\n                    \"name_en\": \"TEFL Certification\",\n                    \"name_ar\": \"شهادة تعليم اللغة الإنجليزية كلغة أجنبية\"\n                }\n            }\n        ]\n    }\n}"
+							}
+						}
+					]
+				},
+				{
+					"name": "Get Education Profile",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/users/profile/education",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"profile",
+								"education"
+							]
+						},
+						"description": "Get user's education profile including history, license, and certifications"
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept-Language",
+										"value": "ar"
+									}
+								]
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"body": {
+								"mode": "raw",
+								"raw": "{\n    \"success\": true,\n    \"message\": \"تم بنجاح\",\n    \"data\": {\n        \"education_history\": {\n            \"id\": 1,\n            \"user_id\": 1,\n            \"degree\": \"Bachelor of Education\",\n            \"institution\": \"King Saud University\",\n            \"major\": \"Mathematics Education\",\n            \"graduation_year\": 2018,\n            \"gpa\": 3.8,\n            \"file\": \"path/to/file1.pdf\",\n            \"created_at\": \"2024-03-20T10:00:00Z\",\n            \"updated_at\": \"2024-03-20T10:00:00Z\"\n        },\n        \"teaching_license\": {\n            \"id\": 1,\n            \"user_id\": 1,\n            \"license_number\": \"T123456\",\n            \"issuing_authority\": \"Ministry of Education\",\n            \"issue_date\": \"2020-01-01\",\n            \"expiry_date\": \"2025-01-01\",\n            \"file\": \"path/to/license.pdf\",\n            \"status\": \"active\",\n            \"created_at\": \"2024-03-20T10:00:00Z\",\n            \"updated_at\": \"2024-03-20T10:00:00Z\"\n        },\n        \"certifications\": [\n            {\n                \"id\": 1,\n                \"user_id\": 1,\n                \"certification_id\": 1,\n                \"issue_date\": \"2021-03-15\",\n                \"expiry_date\": \"2024-03-15\",\n                \"file\": \"path/to/cert1.pdf\",\n                \"issuing_authority\": \"International TEFL Academy\",\n                \"created_at\": \"2024-03-20T10:00:00Z\",\n                \"updated_at\": \"2024-03-20T10:00:00Z\",\n                \"certification\": {\n                    \"id\": 1,\n                    \"name_en\": \"TEFL Certification\",\n                    \"name_ar\": \"شهادة تعليم اللغة الإنجليزية كلغة أجنبية\"\n                }\n            }\n        ]\n    }\n}"
+							}
+						}
+					]
+				}
+			],
+			"description": "User profile management endpoints"
+		},
+		{
+			"name": "Teachers",
+			"item": [
+				{
+					"name": "Search Teachers",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/teachers/search?city_id=1&subject_id=1&availability=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"teachers",
+								"search"
+							],
+							"query": [
+								{
+									"key": "city_id",
+									"value": "1"
+								},
+								{
+									"key": "subject_id",
+									"value": "1"
+								},
+								{
+									"key": "availability",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Search for available teachers"
+					}
+				},
+				{
+					"name": "Get Teacher Details",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/teachers/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"teachers",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Get detailed information about a specific teacher"
+					}
+				}
+			],
+			"description": "Teacher related endpoints"
+		},
+		{
+			"name": "Jobs",
+			"item": [
+				{
+					"name": "Create Job",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Math Teacher Needed\",\n    \"description\": \"Looking for a math teacher\",\n    \"subject_id\": 1,\n    \"grade_level\": \"High School\",\n    \"start_date\": \"2024-01-01\",\n    \"end_date\": \"2024-01-31\",\n    \"daily_rate\": 200.00,\n    \"requirements\": \"5 years experience\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/jobs",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"jobs"
+							]
+						},
+						"description": "Create a new job posting"
+					}
+				},
+				{
+					"name": "Search Jobs",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/jobs/search?subject_id=1&city_id=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"jobs",
+								"search"
+							],
+							"query": [
+								{
+									"key": "subject_id",
+									"value": "1"
+								},
+								{
+									"key": "city_id",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Search for available jobs"
+					}
+				}
+			],
+			"description": "Job related endpoints"
+		},
+		{
+			"name": "Applications",
+			"item": [
+				{
+					"name": "Apply for Job",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"job_id\": 1,\n    \"note\": \"I am interested in this position\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/applications",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"applications"
+							]
+						},
+						"description": "Apply for a job posting"
+					}
+				},
+				{
+					"name": "Get My Applications",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/applications/my",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"applications",
+								"my"
+							]
+						},
+						"description": "Get list of my job applications"
+					}
+				}
+			],
+			"description": "Job application related endpoints"
+		},
+		{
+			"name": "Lookups",
+			"item": [
+				{
+					"name": "Get All Lookups",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/lookups",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"lookups"
+							]
+						},
+						"description": "Get all lookup data including teaching styles, subjects, certifications, and cities"
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept-Language",
+										"value": "ar"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/api/lookups"
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"body": {
+								"mode": "raw",
+								"raw": "{\n    \"success\": true,\n    \"message\": \"تم بنجاح\",\n    \"data\": {\n        \"teaching_styles\": [\n            {\n                \"id\": 1,\n                \"style_name_en\": \"Lecture-based\",\n                \"style_name_ar\": \"قائم على المحاضرات\",\n                \"created_at\": \"2024-03-20T10:00:00Z\",\n                \"updated_at\": \"2024-03-20T10:00:00Z\"\n            },\n            {\n                \"id\": 2,\n                \"style_name_en\": \"Interactive\",\n                \"style_name_ar\": \"تفاعلي\",\n                \"created_at\": \"2024-03-20T10:00:00Z\",\n                \"updated_at\": \"2024-03-20T10:00:00Z\"\n            }\n        ],\n        \"subjects\": [\n            {\n                \"id\": 1,\n                \"name_en\": \"Mathematics\",\n                \"name_ar\": \"الرياضيات\",\n                \"created_at\": \"2024-03-20T10:00:00Z\",\n                \"updated_at\": \"2024-03-20T10:00:00Z\"\n            },\n            {\n                \"id\": 2,\n                \"name_en\": \"Science\",\n                \"name_ar\": \"العلوم\",\n                \"created_at\": \"2024-03-20T10:00:00Z\",\n                \"updated_at\": \"2024-03-20T10:00:00Z\"\n            }\n        ],\n        \"certifications\": [\n            {\n                \"id\": 1,\n                \"name_en\": \"K-12 Math\",\n                \"name_ar\": \"الرياضيات للمراحل K-12\",\n                \"created_at\": \"2024-03-20T10:00:00Z\",\n                \"updated_at\": \"2024-03-20T10:00:00Z\"\n            },\n            {\n                \"id\": 2,\n                \"name_en\": \"STEM Specialist\",\n                \"name_ar\": \"متخصص STEM\",\n                \"created_at\": \"2024-03-20T10:00:00Z\",\n                \"updated_at\": \"2024-03-20T10:00:00Z\"\n            }\n        ],\n        \"cities\": [\n            {\n                \"id\": 1,\n                \"name_en\": \"Riyadh\",\n                \"name_ar\": \"الرياض\",\n                \"created_at\": \"2024-03-20T10:00:00Z\",\n                \"updated_at\": \"2024-03-20T10:00:00Z\"\n            },\n            {\n                \"id\": 2,\n                \"name_en\": \"Jeddah\",\n                \"name_ar\": \"جدة\",\n                \"created_at\": \"2024-03-20T10:00:00Z\",\n                \"updated_at\": \"2024-03-20T10:00:00Z\"\n            }\n        ]\n    }\n}"
+							}
+						}
+					]
+				}
+			],
+			"description": "Lookup data endpoints"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:9090",
+			"type": "string"
+		},
+		{
+			"key": "access_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "refresh_token",
+			"value": "",
+			"type": "string"
+		}
+	]
+} 
